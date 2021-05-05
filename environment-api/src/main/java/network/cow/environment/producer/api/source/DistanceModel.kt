@@ -1,4 +1,4 @@
-package network.cow.environment.producer.api.audio
+package network.cow.environment.producer.api.source
 
 /**
  * @author Benedikt Wüller
