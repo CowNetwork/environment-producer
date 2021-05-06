@@ -5,7 +5,7 @@ package network.cow.environment.producer.core.trigger.condition
  */
 class OrCondition<ContextType : Any>(private vararg val conditions: Condition<ContextType>) : Condition<ContextType> {
 
-    override fun validate(context: ContextType) = this.conditions.any { it.validate(context) }
+    override fun validate(context: ContextType) = this.conditions.count { it.validate(context) } >= 1
 
 }
 

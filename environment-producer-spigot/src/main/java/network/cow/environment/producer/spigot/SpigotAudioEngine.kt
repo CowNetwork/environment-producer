@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin
 object SpigotAudioEngine : AudioEngine<Player>(), Listener {
 
     init {
-        Bukkit.getScheduler().runTaskTimer(JavaPlugin.getPlugin(EnvironmentPlugin::class.java), Runnable(this::update), 1L, 1L)
+        Bukkit.getScheduler().runTaskTimer(JavaPlugin.getPlugin(EnvironmentPlugin::class.java), Runnable(this::update), 2L, 2L)
     }
 
     override fun send(context: Player, payload: Any) {

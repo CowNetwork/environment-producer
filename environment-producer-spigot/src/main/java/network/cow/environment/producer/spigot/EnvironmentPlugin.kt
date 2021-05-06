@@ -23,11 +23,13 @@ class EnvironmentPlugin : JavaPlugin() {
         val inSunlight = SpigotCondition { it.location.block.lightFromSky > 7 }
         SpigotAudioEngine.addTrigger(birdsSource, dayTime and inSunlight andNot underWater, 1000)
 
-        val pickUpSource = GlobalAudioSource("minigame.smash.item_pickup", 0.5)
-        val eventCondition = EventCondition()
-        SpigotAudioEngine.addTrigger(pickUpSource, eventCondition, fireAndForget = true)
-        // ...
-        eventCondition.trigger(player)
+//        val pickUpSource = GlobalAudioSource("minigame.smash.item_pickup", 0.5)
+//        pickUpSource.play(player)
+//
+//        val eventCondition = EventCondition()
+//        SpigotAudioEngine.addTrigger(pickUpSource, eventCondition, fireAndForget = true)
+//        // ...
+//        eventCondition.trigger(player)
     }
 
 }
