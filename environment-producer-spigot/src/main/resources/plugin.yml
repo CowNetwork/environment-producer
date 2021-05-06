@@ -1,0 +1,4 @@
+name: Environment
+main: network.cow.environment.producer.spigot.EnvironmentPlugin
+api-version: 1.16
+version: 1.0.0

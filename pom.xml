@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>environment-core</module>
-        <module>environment-spigot</module>
+        <module>environment-producer-core</module>
+        <module>environment-producer-spigot</module>
     </modules>
 
     <properties>
