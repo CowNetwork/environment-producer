@@ -2,11 +2,11 @@ package network.cow.environment.producer.core.source
 
 import network.cow.environment.producer.core.AudioEngine
 import network.cow.environment.producer.core.AudioInstance
-import network.cow.environment.producer.core.message.payload.FadeAudioPayload
-import network.cow.environment.producer.core.message.payload.PlayAudioPayload
-import network.cow.environment.producer.core.message.payload.Sprite
-import network.cow.environment.producer.core.message.payload.StopAudioPayload
-import network.cow.environment.producer.core.message.payload.UpdateAudioPayload
+import network.cow.environment.producer.core.Point3D
+import network.cow.environment.producer.core.message.consumer.AudioStartedPayload
+import network.cow.environment.producer.core.message.consumer.AudioStoppedPayload
+import network.cow.environment.producer.core.message.consumer.PannerAttributes
+import network.cow.environment.producer.core.message.consumer.Sprite
 import java.util.UUID
 import java.util.WeakHashMap
 import kotlin.properties.Delegates
@@ -38,6 +38,11 @@ abstract class AudioSource<ContextType : Any>(
 
     fun addInstance(context: ContextType) : AudioInstance<ContextType> {
         val instance = AudioInstance(context, this)
+        this.engine.addListener(instance.id) {
+            if (it is AudioStoppedPayload) {
+                instance.isPlaying = false
+            }
+        }
         this.instances[context] = instance
         return instance
     }
@@ -46,6 +51,7 @@ abstract class AudioSource<ContextType : Any>(
 
     fun removeInstance(context: ContextType) {
         val instance = this.instances.remove(context) ?: return
+        this.engine.removeListener(instance.id)
         instance.stop()
     }
 
@@ -70,32 +76,30 @@ abstract class AudioSource<ContextType : Any>(
     internal fun sendPlay(context: ContextType, id: UUID, volume: Double, rate: Double) {
         if (volume < 0 || volume > 1.0) throw IllegalArgumentException("The volume must be between 0.0 and 1.0.")
         val croppedRate = minOf(maxOf(rate * this.baseRate, 0.5), 4.0)
-        val payload = this.createUpdateAudioPayload(id, volume, croppedRate)
-        this.engine.playAudio(context, PlayAudioPayload(
-                this.key, this.section,
-                id, volume * this.baseVolume, croppedRate,
-                payload.loop, payload.loopFadeDuration,
-                payload.position, payload.pannerAttributes
-        ))
+        this.engine.playAudio(
+                context, this.key, this.section, id, volume * this.baseVolume, croppedRate,
+                this.loop, this.loopFadeDuration, this.getPosition(), this.getPannerAttributes()
+        )
     }
 
     internal fun sendUpdate(context: ContextType, id: UUID, volume: Double, rate: Double) {
         if (volume < 0 || volume > 1.0) throw IllegalArgumentException("The volume must be between 0.0 and 1.0.")
         val croppedRate = minOf(maxOf(rate * this.baseRate, 0.5), 4.0)
-        val payload = this.createUpdateAudioPayload(id, volume, croppedRate)
-        this.engine.updateAudio(context, payload)
+        this.engine.updateAudio(
+                context, id, volume * this.baseVolume, croppedRate,
+                this.loop, this.loopFadeDuration, this.getPosition(), this.getPannerAttributes()
+        )
     }
 
     internal fun sendFade(context: ContextType, id: UUID, volume: Double, duration: Int) {
         if (duration < 0) throw IllegalArgumentException("The duration must be equal to or greater than zero.")
         if (volume < 0 || volume > 1.0) throw IllegalArgumentException("The volume must be between 0.0 and 1.0.")
-        val payload = FadeAudioPayload(id, volume * this.baseVolume, duration)
-        this.engine.fadeAudio(context, payload)
+        this.engine.fadeAudio(context, id, volume * this.baseVolume, duration)
     }
 
     internal fun sendStop(context: ContextType, id: UUID, duration: Int) {
         if (duration < 0) throw IllegalArgumentException("The duration must be equal to or greater than zero.")
-        this.engine.stopAudio(context, StopAudioPayload(id, duration))
+        this.engine.stopAudio(context, id, duration)
     }
 
     @Suppress("UNUSED_PARAMETER") // The unused parameters are required for method references to work.
@@ -103,6 +107,8 @@ abstract class AudioSource<ContextType : Any>(
         this.instances.values.forEach { it.update(property, oldValue, newValue) }
     }
 
-    protected abstract fun createUpdateAudioPayload(id: UUID, volume: Double, rate: Double) : UpdateAudioPayload
+    protected open fun getPosition(): Point3D? = null
+
+    protected open fun getPannerAttributes(): PannerAttributes? = null
 
 }

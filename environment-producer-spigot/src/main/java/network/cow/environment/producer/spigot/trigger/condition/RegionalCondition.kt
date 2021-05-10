@@ -8,6 +8,8 @@ import org.bukkit.entity.Player
 /**
  * @author Benedikt Wüller
  */
-class RegionalCondition(shape: Shape) : RegionalCondition<Player>(shape) {
+class RegionalCondition(shape: Shape) : RegionalCondition<Player>(shape), SpigotCondition {
+
     override fun getPosition(context: Player) = context.location.toPoint()
+
 }

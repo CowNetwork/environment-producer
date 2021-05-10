@@ -17,6 +17,7 @@ open class Trigger<ContextType : Any>(
         val fadeDuration: Int = 0,
         val volumeProvider: VolumeProvider<ContextType> = VolumeProviders.maxVolume(),
         val rateProvider: RateProvider<ContextType> = RateProviders.default(),
+        val triggerOnce: Boolean = false,
         val fireAndForget: Boolean = false
 ) {
 
@@ -36,7 +37,14 @@ open class Trigger<ContextType : Any>(
             // If the audio is inactive and no instance exists, do nothing.
             !isActive && !wasActive -> return
             // If the audio is inactive and the instance exists, stop and remove it.
-            !isActive && wasActive && !this.fireAndForget -> this.invalidate(context)
+            !isActive && wasActive -> {
+                if (this.triggerOnce && !this.fireAndForget) { // Only fade out if the trigger is single use and may still be used in the future.
+                    val instance = this.source.getInstance(context) ?: return
+                    instance.fadeTo(0.0, this.fadeDuration)
+                } else if (!this.triggerOnce) { // Remove only if this trigger is not single use.
+                    this.invalidate(context)
+                }
+            }
             // If the audio is active and the instance exists, update rate and volume (if required).
             isActive && wasActive && !this.fireAndForget -> {
                 val instance = this.source.getInstance(context) ?: return
@@ -51,24 +59,21 @@ open class Trigger<ContextType : Any>(
             }
             // If the audio is active and no instance exists, create and start one.
             isActive && !wasActive -> {
-                val newInstance = this.source.addInstance(context)
+                val instance = if (this.triggerOnce) this.source.getInstance(context) else null
+
+                // If the trigger is single use, fire and forget and an audio instance has already been created, nothing should be done.
+                if (instance != null && this.triggerOnce && this.fireAndForget) return
+
+                val newInstance = instance ?: this.source.addInstance(context)
                 val volume = this.volumeProvider.getVolume(context)
-                newInstance.rate = this.rateProvider.getRate(context)
 
-                if (this.fadeDuration > 0) {
-                    // If a fade duration is set, start muted and fade in.
+                newInstance.suppressUpdate {
+                    newInstance.rate = this@Trigger.rateProvider.getRate(context)
                     newInstance.volume = 0.0
-                    newInstance.play()
-                    newInstance.fadeTo(volume, this.fadeDuration)
-                } else {
-                    // Otherwise start with the requested volume.
-                    newInstance.volume = volume
-                    newInstance.play()
                 }
 
-                if (this.fireAndForget) {
-                    this.source.removeInstance(context)
-                }
+                newInstance.play()
+                newInstance.fadeTo(volume, this.fadeDuration)
             }
         }
     }

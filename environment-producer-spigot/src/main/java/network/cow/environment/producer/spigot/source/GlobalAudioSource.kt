@@ -1,8 +1,8 @@
 package network.cow.environment.producer.spigot.source
 
-import network.cow.environment.producer.core.message.payload.Sprite
+import network.cow.environment.producer.core.message.consumer.Sprite
 import network.cow.environment.producer.core.source.GlobalAudioSource
-import network.cow.environment.producer.spigot.SpigotAudioEngine
+import network.cow.environment.producer.spigot.Environment
 import org.bukkit.entity.Player
 
 /**
@@ -15,4 +15,4 @@ class GlobalAudioSource(
         loopFadeDuration: Int = 0,
         rate: Double = 1.0,
         section: Sprite = Sprite()
-) : GlobalAudioSource<Player>(SpigotAudioEngine, key, volume, loop, loopFadeDuration, rate, section)
+) : GlobalAudioSource<Player>(Environment, key, volume, loop, loopFadeDuration, rate, section)

@@ -2,10 +2,8 @@ package network.cow.environment.producer.core.source
 
 import network.cow.environment.producer.core.AudioEngine
 import network.cow.environment.producer.core.Point3D
-import network.cow.environment.producer.core.message.payload.PannerAttributes
-import network.cow.environment.producer.core.message.payload.Sprite
-import network.cow.environment.producer.core.message.payload.UpdateAudioPayload
-import java.util.UUID
+import network.cow.environment.producer.core.message.consumer.PannerAttributes
+import network.cow.environment.producer.core.message.consumer.Sprite
 import kotlin.properties.Delegates
 
 /**
@@ -43,12 +41,8 @@ open class PositionalAudioSource<ContextType : Any>(
         if (this.distanceModel == DistanceModel.LINEAR && this.rollOffFactor > 1.0) throw IllegalArgumentException("The roll off factor must not be greater than 1.0 when using the ${DistanceModel.LINEAR} distance model.")
     }
 
-    override fun createUpdateAudioPayload(id: UUID, volume: Double, rate: Double) : UpdateAudioPayload {
-        return UpdateAudioPayload(
-                id, volume, rate, this.loop, this.loopFadeDuration,
-                Point3D(this.x, this.y, this.z),
-                PannerAttributes(this.distanceModel.key, this.maxVolumeRadius, this.rollOffFactor)
-        )
-    }
+    override fun getPosition(): Point3D? = Point3D(this.x, this.y, this.z)
+
+    override fun getPannerAttributes(): PannerAttributes? = PannerAttributes(this.distanceModel.key, this.maxVolumeRadius, this.rollOffFactor)
 
 }
