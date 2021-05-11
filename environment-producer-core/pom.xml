@@ -11,5 +11,41 @@
 
     <artifactId>environment-producer-core</artifactId>
 
+    <properties>
+        <ktor.version>1.5.4</ktor.version>
+        <kotlin.code.style>official</kotlin.code.style>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>network.cow.environment</groupId>
+            <artifactId>environment-protocol</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- Ktor -->
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-core-jvm</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-cio-jvm</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-auth-jvm</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-websockets-jvm</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

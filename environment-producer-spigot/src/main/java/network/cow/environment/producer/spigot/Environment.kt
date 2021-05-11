@@ -1,8 +1,7 @@
 package network.cow.environment.producer.spigot
 
-import com.google.gson.GsonBuilder
 import network.cow.environment.producer.core.AudioEngine
-import network.cow.environment.producer.core.message.Message
+import network.cow.environment.protocol.Point3D
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -22,6 +21,10 @@ object Environment : AudioEngine<Player>(), Listener {
     }
 
     override fun getPosition(context: Player) = context.location.toPoint()
+
+    override fun getFrontVector(context: Player): Point3D = context.getDirectionalVector().toPoint()
+
+    override fun getUpVector(context: Player): Point3D = context.getDirectionalVector(context.location.pitch - 90.0).toPoint()
 
     @EventHandler
     private fun onPlayerJoin(event: PlayerJoinEvent) {

@@ -1,9 +1,9 @@
 package network.cow.environment.producer.core.source
 
 import network.cow.environment.producer.core.AudioEngine
-import network.cow.environment.producer.core.Point3D
-import network.cow.environment.producer.core.message.consumer.PannerAttributes
-import network.cow.environment.producer.core.message.consumer.Sprite
+import network.cow.environment.protocol.Point3D
+import network.cow.environment.protocol.consumer.PannerAttributes
+import network.cow.environment.protocol.consumer.Sprite
 import kotlin.properties.Delegates
 
 /**

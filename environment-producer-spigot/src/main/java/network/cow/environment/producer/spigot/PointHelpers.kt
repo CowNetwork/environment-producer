@@ -1,6 +1,6 @@
 package network.cow.environment.producer.spigot
 
-import network.cow.environment.producer.core.Point3D
+import network.cow.environment.protocol.Point3D
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.util.Vector

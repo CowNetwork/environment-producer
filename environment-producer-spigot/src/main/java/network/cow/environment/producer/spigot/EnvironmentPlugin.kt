@@ -23,8 +23,12 @@ class EnvironmentPlugin : JavaPlugin() {
         val birdsSource = GlobalAudioSource("common.environment.birds", 0.3, true, 5000)
         val underWaterSource = GlobalAudioSource("common.environment.under_water", 0.5, true, 10000)
 
-        Environment.addTrigger(birdsSource, dayTime and inSunlight andNot underWater, 3000, triggerOnce = true)
-        Environment.addTrigger(underWaterSource, underWater, 1000, triggerOnce = true)
+        Environment.addTrigger(birdsSource, dayTime and inSunlight andNot underWater, 3000, playOnce = true)
+        Environment.addTrigger(underWaterSource, underWater, 1000, playOnce = true)
+    }
+
+    override fun onDisable() {
+        Environment.disconnect()
     }
 
 }

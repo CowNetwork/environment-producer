@@ -1,10 +1,10 @@
 package network.cow.environment.producer.spigot.source
 
-import network.cow.environment.producer.core.message.consumer.Sprite
 import network.cow.environment.producer.core.source.DistanceModel
 import network.cow.environment.producer.core.source.PositionalAudioSource
 import network.cow.environment.producer.spigot.Environment
 import network.cow.environment.producer.spigot.toPoint
+import network.cow.environment.protocol.consumer.Sprite
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 

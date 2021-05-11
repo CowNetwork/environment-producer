@@ -2,11 +2,10 @@ package network.cow.environment.producer.core.source
 
 import network.cow.environment.producer.core.AudioEngine
 import network.cow.environment.producer.core.AudioInstance
-import network.cow.environment.producer.core.Point3D
-import network.cow.environment.producer.core.message.consumer.AudioStartedPayload
-import network.cow.environment.producer.core.message.consumer.AudioStoppedPayload
-import network.cow.environment.producer.core.message.consumer.PannerAttributes
-import network.cow.environment.producer.core.message.consumer.Sprite
+import network.cow.environment.protocol.Point3D
+import network.cow.environment.protocol.consumer.AudioStoppedPayload
+import network.cow.environment.protocol.consumer.PannerAttributes
+import network.cow.environment.protocol.consumer.Sprite
 import java.util.UUID
 import java.util.WeakHashMap
 import kotlin.properties.Delegates
@@ -37,6 +36,7 @@ abstract class AudioSource<ContextType : Any>(
     }
 
     fun addInstance(context: ContextType) : AudioInstance<ContextType> {
+        this.removeInstance(context)
         val instance = AudioInstance(context, this)
         this.engine.addListener(instance.id) {
             if (it is AudioStoppedPayload) {

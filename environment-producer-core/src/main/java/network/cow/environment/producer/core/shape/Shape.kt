@@ -1,6 +1,6 @@
 package network.cow.environment.producer.core.shape
 
-import network.cow.environment.producer.core.Point3D
+import network.cow.environment.protocol.Point3D
 
 /**
  * @author Benedikt Wüller

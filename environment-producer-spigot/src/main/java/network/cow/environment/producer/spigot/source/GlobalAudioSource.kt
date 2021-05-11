@@ -1,8 +1,8 @@
 package network.cow.environment.producer.spigot.source
 
-import network.cow.environment.producer.core.message.consumer.Sprite
 import network.cow.environment.producer.core.source.GlobalAudioSource
 import network.cow.environment.producer.spigot.Environment
+import network.cow.environment.protocol.consumer.Sprite
 import org.bukkit.entity.Player
 
 /**

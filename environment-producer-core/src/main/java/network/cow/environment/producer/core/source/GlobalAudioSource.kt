@@ -1,7 +1,7 @@
 package network.cow.environment.producer.core.source
 
 import network.cow.environment.producer.core.AudioEngine
-import network.cow.environment.producer.core.message.consumer.Sprite
+import network.cow.environment.protocol.consumer.Sprite
 
 /**
  * @author Benedikt Wüller

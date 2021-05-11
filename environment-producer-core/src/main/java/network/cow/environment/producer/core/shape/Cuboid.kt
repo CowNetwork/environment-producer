@@ -1,8 +1,8 @@
 package network.cow.environment.producer.core.shape
 
-import network.cow.environment.producer.core.Point3D
-import network.cow.environment.producer.core.maxOf
-import network.cow.environment.producer.core.minOf
+import network.cow.environment.protocol.Point3D
+import network.cow.environment.protocol.maxOf
+import network.cow.environment.protocol.minOf
 
 /**
  * @author Benedikt Wüller
