@@ -57,10 +57,6 @@ abstract class AudioEngine<ContextType : Any> {
     }
 
     private fun handlePayload(payload: Payload) {
-        println(payload.type)
-        println(JsonService.toJson(payload))
-        println(payload)
-
         when (payload) {
             is ConsumerRegisteredPayload -> {
                 val consumer = this.contextConsumers.values.firstOrNull { it.contextId == payload.contextId } ?: return
@@ -69,7 +65,6 @@ abstract class AudioEngine<ContextType : Any> {
                 consumer.state = AudioConsumer.State.REGISTERED
                 consumer.url = payload.consumerUrl
                 consumer.callback(consumer.url)
-                println("registered")
             }
             is ConsumerConnectedPayload -> {
                 val consumer = this.consumers[payload.consumerId] ?: return
